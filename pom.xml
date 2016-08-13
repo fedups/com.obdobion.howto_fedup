@@ -37,6 +37,8 @@
 		<argument.version>4.1.2</argument.version>
 		<howto.version>0.0.1</howto.version>
 
+		<commons-math.version>3.6.1</commons-math.version>
+
 		<java.target.version>1.8</java.target.version>
 		<java.source.version>1.8</java.source.version>
 		<junit.version>4.8.1</junit.version>
