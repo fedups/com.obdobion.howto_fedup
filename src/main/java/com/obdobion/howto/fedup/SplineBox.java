@@ -1,56 +1,87 @@
 package com.obdobion.howto.fedup;
 
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.obdobion.argument.annotation.Arg;
 import com.obdobion.howto.Context;
-import com.obdobion.howto.IPlugin;
+import com.obdobion.howto.IPluginCommand;
+import com.obdobion.howto.Outline;
+import com.obdobion.howto.fedup.layout.MaterialLayout;
+import com.obdobion.howto.fedup.layout.MilledBoard;
+import com.obdobion.howto.fedup.layout.RoughCutLumberLayout;
 
-public class SplineBox implements IPlugin
+/**
+ *
+ * SplineBox.
+ *
+ * The fence for a router table is at 0 for the center of the bit.
+ *
+ * @author Chris DeGreef fedupforone@gmail.com
+ */
+public class SplineBox implements IPluginCommand
 {
-    @Arg(shortName = 'X', longName = "width", required = true, range = { "1" }, help = "external width in inches")
-    float   x;
+    /** Constant <code>GROUP="WoodWorking"</code> */
+    static final public String GROUP = "WoodWorking";
+    /** Constant <code>NAME="splineBox"</code> */
+    static final public String NAME  = "splineBox";
 
-    @Arg(shortName = 'Y', longName = "length", required = true, range = { "1" }, help = "external length in inches")
-    float   y;
+    @Arg(shortName = 'X',
+            longName = "width",
+            required = true,
+            range = { "1" },
+            help = "external left to right in inches")
+    float                      x;
 
-    @Arg(shortName = 'Z', longName = "depth", required = true, range = { "1" }, help = "external depth in inches")
-    float   z;
+    @Arg(shortName = 'Y',
+            longName = "depth",
+            required = true,
+            range = { "1" },
+            help = "external front to back in inches")
+    float                      y;
+
+    @Arg(shortName = 'Z',
+            longName = "height",
+            required = true,
+            range = { "1" },
+            help = "external bottom to top in inches")
+    float                      z;
 
     @Arg(allowCamelCaps = true,
             range = { "0.375" },
             defaultValues = ".5",
             help = "side board thickness in inches")
-    float   sideThickness;
+    float                      sideThickness;
 
     @Arg(allowCamelCaps = true,
             inList = { "0.1875", "0.25", "0.375", "0.5" },
             defaultValues = ".25",
             help = "bottom board thickness in inches")
-    float   bottomThickness;
+    float                      bottomThickness;
 
     @Arg(allowCamelCaps = true,
             range = { "0.0625", "0.75" },
             defaultValues = ".5",
             help = "top board thickness in inches")
-    float   topThickness;
+    float                      topThickness;
 
     @Arg(allowCamelCaps = true,
             range = { "0.0625", "0.25" },
             defaultValues = ".125",
             help = "depth of the dado in the sides for supporting the top and the bottom")
-    float   dadoDepth;
+    float                      dadoDepth;
 
     @Arg(allowCamelCaps = true,
             range = { "0", "4" },
             defaultValues = "1",
             help = "indicates the amount of extra length / width on pieces before final cut")
-    float   roughAllowance;
+    float                      roughAllowance;
 
-    @Arg(allowCamelCaps = true,
-            help = "indicates that the bottom / top pieces should be edge joined on the short side, by default the long side is to be joined")
-    boolean edgeJoinOnShortSides;
+    Context                    context;
 
+    /**
+     * <p>Constructor for SplineBox.</p>
+     */
     public SplineBox()
     {
     }
@@ -60,7 +91,7 @@ public class SplineBox implements IPlugin
         return sideThickness - dadoDepth;
     }
 
-    float bitDepthForTopRabit()
+    float bitDepthForTopRabbet()
     {
         return topThickness - dadoThickness();
     }
@@ -68,23 +99,6 @@ public class SplineBox implements IPlugin
     float bitHeightBasedOnTotalThickness(final float thickness)
     {
         return (thickness / 2) + 0.75F;
-    }
-
-    float boardFeet()
-    {
-        int sqInches = 0;
-
-        sqInches += (x * y) * topThickness;
-        sqInches += (x * y) * bottomThickness;
-        sqInches += 2 * (z * y) * sideThickness;
-        sqInches += 2 * (z * x) * sideThickness;
-
-        return (float) Math.ceil(sqInches / 144);
-    }
-
-    float bottomEdgeRouterBitHeight()
-    {
-        return bitHeightBasedOnTotalThickness(bottomThickness);
     }
 
     float bottomXTotal()
@@ -102,85 +116,30 @@ public class SplineBox implements IPlugin
         return bottomThickness;
     }
 
+    /** {@inheritDoc} */
     @Override
-    public int execute(final Context context)
+    public int execute(final Context p_context)
     {
-        final PrintWriter pw = context.getConsoleOutput();
-        pw.printf("Spline Box -------------------------\n");
+        context = p_context;
 
-        pw.printf("\nMaterials --------------------------\n\n");
-        pw.printf("  %1$4.3 board feet.  However, a standard size 4/4, 6\" wide,\n", boardFeet());
-        pw.printf("  would require a length of %1$d.\n", boardFeet());
+        final Outline message = context.getOutline();
 
-        pw.printf("\nMake the bottom --------------------\n\n");
-        pw.printf("  Use the edge joint router bit to join pieces of wood together.\n");
-        pw.printf("  When adding the widths of the boards to get the total amount \n");
-        pw.printf("  needed for the bottom (%1$4.3f) subtract 1/2\" from each board width.\n",
-                roughBottomXTotal());
-        pw.printf("  Each piece should be %1$4.3f long and the thickness of each is %2$4.3f.\n",
-                roughBottomY(), roughBottomThickness());
-        pw.printf("  Set the height of the bit to %1$4.3f.\n", bottomEdgeRouterBitHeight());
-        pw.printf("  After the glue has dried, plane it to %1$4.3f and trim it to %2$4.3f, %3$4.3f\n",
-                bottomThickness, bottomY(), bottomXTotal());
+        showOverview(message.add("Spline Box"));
+        showMaterials(message.add("Materials"));
+        showBottom(message.add("Make the bottom"));
+        showTop(message.add("Make the top"));
+        showSides(message.add("Make the sides"));
+        showAssembly(message.add("Assemble"));
+        showSplines(message.add("Insert splines"));
+        showRemoveLid(message.add("Remove Lid"));
 
-        pw.printf("\nMake the top -----------------------\n\n");
-        pw.printf("  Use the edge joint router bit to join pieces of wood together.\n");
-        pw.printf("  When adding the widths of the boards to get the total amount \n");
-        pw.printf("  needed for the top (%1$4.3f) subtract 1/2\" from each board width.\n",
-                roughTopXTotal());
-        pw.printf("  Each piece should be %1$4.3f long and the thickness of each is %2$4.3f.\n",
-                roughTopY(), roughTopThickness());
-        pw.printf("  Set the height of the bit to %1$4.3f.\n", topEdgeRouterBitHeight());
-        pw.printf("  After the glue has dried, plane it to %1$4.3f and trim it to %2$4.3f, %3$4.3f\n",
-                topThickness, topY(), topXTotal());
-
-        pw.printf("\nRabit around the top ---------------\n\n");
-        pw.printf("  Use the straight cut router bit nearest to %1$4.3f wide.\n", dadoThickness());
-        pw.printf("  Set the depth to %1$4.3f and the fence to %2$4.3f.\n", bitDepthForTopRabit(),
-                fenceForTopRabit());
-        pw.printf("  Route all around the sides with the top face down on the table.\n");
-
-        pw.printf("\nMake the sides -------------------\n\n");
-        pw.printf("  First cut two boards %1$4.3f long and two more %2$4.3f long.\n",
-                roughYSideLength(), roughXSideLength());
-        pw.printf("  Rip these 4 boards to be %1$4.3f wide.\n", z);
-        pw.printf("  Plane these 4 boards to be %1$4.3f thick.\n", sideThickness);
-        pw.printf("  Place the top edge of each board to the fence for each of these dados.\n");
-        pw.printf("  Dado for the bottom by installing a %1$4.3f wide dado blade,\n", dadoThickness());
-        pw.printf(
-                "  setting the fence to %1$4.3f and blade depth to %2$4.3f.  Rip each of the 4 sides for the bottom.\n",
-                fenceForBottomDado(), dadoDepth);
-        pw.printf("  Dado for the top by installing a %1$4.3f wide dado blade,\n", dadoThickness());
-        pw.printf("  setting the fence to %1$4.3f and blade depth to %2$4.3f.  Rip each of the 4 sides for the top.\n",
-                fenceForTopDado(), dadoDepth);
-        pw.printf("  Dado for the lid by installing a %1$4.3f wide dado blade,\n", dadoThickness());
-        pw.printf("  setting the fence to %1$4.3f and blade depth to %2$4.3f.  Rip each of the 4 sides for the lid.\n",
-                fenceForLidInnerDado(), dadoDepth);
-
-        pw.printf("\nAssemble -------------------------\n\n");
-        pw.printf("  After it is all glued and dried.\n");
-
-        pw.printf("\nInsert splines -------------------\n\n");
-        pw.printf("  The following cuts are made with the top of the box to the fence.\n");
-        pw.printf("  Dado for the splines by installing a 0.250 wide dado blade,\n");
-        pw.printf("   - setting the fence to %1$4.3f and blade depth to 0.750.  Rip each of the 4 corners.\n",
-                fenceForTopSpline());
-        pw.printf("   - setting the fence to %1$4.3f.  Rip each of the 4 corners.\n",
-                fenceForMiddleSpline());
-        pw.printf("   - setting the fence to %1$4.3f.  Rip each of the 4 corners.\n",
-                fenceForBottomSpline());
-
-        pw.printf("\nRemove Lid -----------------------\n\n");
-        pw.printf("  Use the straight cut router bit nearest to %1$4.3f wide.\n", dadoThickness());
-        pw.printf("  Set the depth to %1$4.3f and the fence to %2$4.3f.\n", bitDepthForLidRemoval(),
-                fenceForLidRemoval());
-        pw.printf("  Route all around the sides with the top against the fence.\n");
+        message.print(context);
         return 0;
     }
 
     float fenceForBottomDado()
     {
-        return z - dadoThickness() - 0.125F;
+        return sideBoardWidth() - dadoThickness() - insetZForBottom();
     }
 
     float fenceForBottomSpline()
@@ -208,72 +167,72 @@ public class SplineBox implements IPlugin
         return topThickness - dadoThickness();
     }
 
-    float fenceForTopRabit()
-    {
-        return dadoDepth / 2;
-    }
-
     float fenceForTopSpline()
     {
         return fenceForLidInnerDado() - (splineSize() / 2);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public String getGroup()
+    {
+        return GROUP;
+    }
+
+    /** {@inheritDoc} */
     @Override
     public String getName()
     {
-        return "splineBox";
+        return NAME;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getOverview()
     {
         return "How to build a spline box.";
     }
 
-    int lengthNeeded()
+    float insetZForBottom()
     {
-        int inches = 0;
-
-        inches += 2 * (y + roughAllowance);
-        inches += 2 * (x + roughAllowance);
-        inches += (2 * (x + roughAllowance)) * (y / 6);
-
-        return inches;
+        return 0.125F;
     }
 
-    float roughBottomThickness()
+    float insideX()
     {
-        return bottomThickness + 0.125F;
+        return x - (2 * sideThickness);
+    }
+
+    float insideY()
+    {
+        return y - (2 * sideThickness);
+    }
+
+    float insideZ()
+    {
+        return z - bottomThickness - insetZForBottom() - topThickness;
+    }
+
+    List<MilledBoard> neededBoards()
+    {
+        final List<MilledBoard> boards = new ArrayList<>();
+        boards.add(new MilledBoard("bottom", roughBottomY(), roughBottomXTotal(), bottomThickness));
+        boards.add(new MilledBoard("top", roughTopY(), roughTopXTotal(), topThickness));
+        boards.add(new MilledBoard("side 1", sideBoardWidth(), roughXSideLength(), sideThickness));
+        boards.add(new MilledBoard("side 2", sideBoardWidth(), roughXSideLength(), sideThickness));
+        boards.add(new MilledBoard("side 3", sideBoardWidth(), roughYSideLength(), sideThickness));
+        boards.add(new MilledBoard("side 4", sideBoardWidth(), roughYSideLength(), sideThickness));
+        return boards;
     }
 
     float roughBottomXTotal()
     {
-        final float lengthToUse;
-        if (edgeJoinOnShortSides)
-            if (x < y)
-                lengthToUse = y;
-            else
-                lengthToUse = x;
-        else if (x > y)
-            lengthToUse = y;
-        else
-            lengthToUse = x;
-        return lengthToUse - (2 * sideThickness) + dadoDepth + roughAllowance;
+        return x - (2 * sideThickness) + dadoDepth + roughAllowance;
     }
 
     float roughBottomY()
     {
-        final float lengthToUse;
-        if (edgeJoinOnShortSides)
-            if (x < y)
-                lengthToUse = x;
-            else
-                lengthToUse = y;
-        else if (x > y)
-            lengthToUse = x;
-        else
-            lengthToUse = y;
-        return lengthToUse - (2 * sideThickness) + dadoDepth + roughAllowance;
+        return y - (2 * sideThickness) + dadoDepth + roughAllowance;
     }
 
     float roughTopThickness()
@@ -301,14 +260,131 @@ public class SplineBox implements IPlugin
         return y + roughAllowance;
     }
 
+    private void showAssembly(final Outline o)
+    {
+        o.add("Glue, clamp and wait for it to dry.");
+    }
+
+    /**
+     * @param o
+     */
+    private void showBottom(final Outline o)
+    {
+        context.getPluginManager().run(context,
+                context.getPluginManager().uniqueNameFor(EdgeJoinPanels.GROUP, EdgeJoinPanels.NAME),
+                "-X %1$4.3f -Y %2$4.3f --th %3$4.3f --RA %4$4.3f",
+                bottomXTotal(),
+                bottomY(),
+                bottomThickness,
+                roughAllowance);
+    }
+
+    private void showMaterials(final Outline o)
+    {
+        final MaterialLayout mat = new RoughCutLumberLayout();
+        o.add("   Width   Length   Thickness");
+        mat.layout(neededBoards()).forEach(rawBoard -> o.add("%1$8.3f%2$9.3f%3$12.3f   %4$-20s",
+                rawBoard.getWidth(),
+                rawBoard.getLength(),
+                rawBoard.getThickness(),
+                rawBoard.getTitle()));
+    }
+
+    private void showOverview(final Outline o)
+    {
+        o.add("external width%1$6.2f, depth%2$6.2f, height%3$6.3f", y, x, z);
+        o.add("internal width%1$6.2f, depth%2$6.2f, height%3$6.3f", insideY(), insideX(), insideZ());
+    }
+
+    /**
+     * @param o
+     */
+    private void showRemoveLid(final Outline o)
+    {
+        context.getPluginManager().run(context,
+                context.getPluginManager().uniqueNameFor(Dado.GROUP, Dado.NAME),
+                "-W %1$4.3f -D %2$4.3f -X %3$4.3f --type ETT --tool TS",
+                dadoThickness(),
+                bitDepthForLidRemoval(),
+                fenceForLidRemoval());
+    }
+
+    private void showSides(final Outline o)
+    {
+        context.getPluginManager().run(context,
+                context.getPluginManager().uniqueNameFor(MiteredBox.GROUP, MiteredBox.NAME),
+                "--sides 4 --EL %1$4.3f --EW %2$4.3f --BW %3$4.3f --th %4$4.3f --RA %5$4.3f",
+                y,
+                x,
+                sideBoardWidth(),
+                sideThickness,
+                roughAllowance);
+
+        o.add("Place the top edge of each board to the fence and the inside of the box side down.");
+        context.getPluginManager().run(context,
+                context.getPluginManager().uniqueNameFor(Dado.GROUP, Dado.NAME),
+                "-W %1$4.3f -D %2$4.3f -X %3$4.3f --type ETT --tool TS",
+                dadoThickness(),
+                dadoDepth,
+                fenceForBottomDado());
+
+        o.add("Place the top edge of each board to the fence and the inside of the box side down.");
+        context.getPluginManager().run(context,
+                context.getPluginManager().uniqueNameFor(Dado.GROUP, Dado.NAME),
+                "-W %1$4.3f -D %2$4.3f -X %3$4.3f --type ETT --tool TS",
+                dadoThickness(),
+                dadoDepth,
+                fenceForTopDado());
+
+        o.add("Place the top edge of each board to the fence and the inside of the box side down.");
+        context.getPluginManager().run(context,
+                context.getPluginManager().uniqueNameFor(Dado.GROUP, Dado.NAME),
+                "-W %1$4.3f -D %2$4.3f -X %3$4.3f --type ETT --tool TS",
+                dadoThickness(),
+                dadoDepth,
+                fenceForLidInnerDado());
+    }
+
+    private void showSplines(final Outline o)
+    {
+        final Outline splines = o.add(
+                "The following cuts are made with the top of the box to the fence. Dado for the splines by installing a 0.250 wide dado blade and setting the depth to 0.75\".  Cut each of the 4 corners as follows.");
+        splines.add("Set the fence to %1$4.3f.", fenceForTopSpline());
+        splines.add("Set the fence to %1$4.3f.", fenceForMiddleSpline());
+        splines.add("Set the fence to %1$4.3f.", fenceForBottomSpline());
+    }
+
+    private void showTop(final Outline o)
+    {
+        context.getPluginManager().run(context,
+                context.getPluginManager().uniqueNameFor(EdgeJoinPanels.GROUP, EdgeJoinPanels.NAME),
+                "-X %1$4.3f -Y %2$4.3f --th %3$4.3f --RA %4$4.3f",
+                topXTotal(),
+                topY(),
+                topThickness,
+                roughAllowance);
+
+        o.add("Top face down on the table.");
+
+        context.getPluginManager().run(context,
+                context.getPluginManager().uniqueNameFor(Dado.GROUP, Dado.NAME),
+                "-W %1$4.3f -D %2$4.3f -X %3$4.3f --type ETT --tool TS",
+                bitDepthForTopRabbet(),
+                topThickness - dadoThickness(),
+                0F);
+    }
+
+    float sideBoardWidth()
+    {
+        /*
+         * Allowing for the dado that removes the top
+         */
+        return z + dadoThickness();
+    }
+
     float splineSize()
     {
         return 0.25F;
-    }
-
-    float tan45()
-    {
-        return (float) (Math.tan(45) * (Math.PI / 180));
     }
 
     float topEdgeRouterBitHeight()
@@ -324,15 +400,5 @@ public class SplineBox implements IPlugin
     float topY()
     {
         return bottomY();
-    }
-
-    float xSideLength()
-    {
-        return tan45() / sideThickness + x;
-    }
-
-    float ySideLength()
-    {
-        return tan45() / sideThickness + y;
     }
 }

@@ -74,7 +74,7 @@ Section "howto_fedup"
     SetOutPath $INSTDIR\plugins\howto_fedup
     SetOverwrite on
     
-    File ..\..\target\mavenDependenciesForNSIS\*.jar
+    File /nonfatal ..\..\target\mavenDependenciesForNSIS\*.jar
     File /x *source* ..\..\target\howto_fedup-${PROJECT_VERSION}.jar
         
     ${EnvVarUpdate} $0 "PATH" "A" "HKLM" $INSTDIR
