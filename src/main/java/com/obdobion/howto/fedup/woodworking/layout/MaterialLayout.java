@@ -1,4 +1,4 @@
-package com.obdobion.howto.fedup.layout;
+package com.obdobion.howto.fedup.woodworking.layout;
 
 import java.util.List;
 

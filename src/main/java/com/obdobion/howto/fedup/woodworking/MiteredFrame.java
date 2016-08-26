@@ -1,4 +1,4 @@
-package com.obdobion.howto.fedup;
+package com.obdobion.howto.fedup.woodworking;
 
 import com.obdobion.argument.annotation.Arg;
 import com.obdobion.howto.Context;
@@ -6,7 +6,9 @@ import com.obdobion.howto.IPluginCommand;
 import com.obdobion.howto.Outline;
 
 /**
- * <p>MiteredFrame class.</p>
+ * <p>
+ * MiteredFrame class.
+ * </p>
  *
  * @author Chris DeGreef fedupforone@gmail.com
  */
@@ -50,7 +52,9 @@ public class MiteredFrame implements IPluginCommand
     float                      roughAllowance;
 
     /**
-     * <p>Constructor for MiteredFrame.</p>
+     * <p>
+     * Constructor for MiteredFrame.
+     * </p>
      */
     public MiteredFrame()
     {
@@ -85,6 +89,13 @@ public class MiteredFrame implements IPluginCommand
     public String getOverview()
     {
         return "The tools and methods to create a frame using the Incr Miter jig";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isOnceAndDone()
+    {
+        return false;
     }
 
     float miterAngle()

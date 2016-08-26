@@ -1,4 +1,4 @@
-package com.obdobion.howto.fedup.layout;
+package com.obdobion.howto.fedup.woodworking.layout;
 
 /**
  * <p>Abstract Board class.</p>
@@ -15,7 +15,7 @@ public abstract class Board
     /**
      * <p>Constructor for Board.</p>
      *
-     * @param anotherBoard a {@link com.obdobion.howto.fedup.layout.Board} object.
+     * @param anotherBoard a {@link com.obdobion.howto.fedup.woodworking.layout.Board} object.
      */
     public Board(final Board anotherBoard)
     {

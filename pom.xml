@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.obdobion</groupId>
 	<artifactId>howto_fedup</artifactId>
-	<version>0.0.3</version>
+	<version>1.0.1</version>
     <name>${project.groupId}.${project.artifactId}</name>
 	<description>howto_fedup</description>
 	<url>https://github.com/fedups/com.obdobion.howto_fedup</url>
@@ -32,7 +32,7 @@
     </scm>
 	
 	<properties>
-		<howto.version>0.0.3</howto.version>
+		<howto.version>1.0.2</howto.version>
 		<java.target.version>1.8</java.target.version>
 		<java.source.version>1.8</java.source.version>
 		<junit.version>4.8.1</junit.version>

@@ -1,4 +1,4 @@
-package com.obdobion.howto.fedup.layout;
+package com.obdobion.howto.fedup.woodworking.layout;
 
 /**
  * <p>RawBoard class.</p>
@@ -10,7 +10,7 @@ public class RawBoard extends Board
     /**
      * <p>Constructor for RawBoard.</p>
      *
-     * @param board a {@link com.obdobion.howto.fedup.layout.Board} object.
+     * @param board a {@link com.obdobion.howto.fedup.woodworking.layout.Board} object.
      */
     public RawBoard(final Board board)
     {

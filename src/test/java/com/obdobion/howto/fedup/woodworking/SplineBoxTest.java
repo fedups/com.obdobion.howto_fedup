@@ -1,4 +1,4 @@
-package com.obdobion.howto.fedup;
+package com.obdobion.howto.fedup.woodworking;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -13,9 +13,11 @@ import com.obdobion.howto.App;
 import com.obdobion.howto.Config;
 import com.obdobion.howto.Context;
 import com.obdobion.howto.PluginManager;
-import com.obdobion.howto.fedup.layout.MilledBoard;
-import com.obdobion.howto.fedup.layout.RawBoard;
-import com.obdobion.howto.fedup.layout.RoughCutLumberLayout;
+import com.obdobion.howto.fedup.woodworking.Dado;
+import com.obdobion.howto.fedup.woodworking.SplineBox;
+import com.obdobion.howto.fedup.woodworking.layout.MilledBoard;
+import com.obdobion.howto.fedup.woodworking.layout.RawBoard;
+import com.obdobion.howto.fedup.woodworking.layout.RoughCutLumberLayout;
 
 /**
  * SplineBoxTest.
@@ -31,9 +33,12 @@ public class SplineBoxTest
     PrintWriter sysout;
 
     /**
-     * <p>boards.</p>
+     * <p>
+     * boards.
+     * </p>
      *
-     * @throws java.lang.Exception if any.
+     * @throws java.lang.Exception
+     *             if any.
      */
     @Test
     public void boards() throws Exception
@@ -56,9 +61,12 @@ public class SplineBoxTest
     }
 
     /**
-     * <p>execute.</p>
+     * <p>
+     * execute.
+     * </p>
      *
-     * @throws java.lang.Exception if any.
+     * @throws java.lang.Exception
+     *             if any.
      */
     @Test
     public void execute() throws Exception
@@ -70,13 +78,18 @@ public class SplineBoxTest
         final Context context = PluginManager.createContext(config, new PluginManager(config));
         context.setParser(cmdline);
         box.execute(context);
+        context.getOutline().print(context);
+        System.out.println(context.getOutline().getWriter().toString());
         App.destroyContext(context);
     }
 
     /**
-     * <p>help.</p>
+     * <p>
+     * help.
+     * </p>
      *
-     * @throws java.lang.Exception if any.
+     * @throws java.lang.Exception
+     *             if any.
      */
     @Test
     public void help() throws Exception
@@ -86,9 +99,12 @@ public class SplineBoxTest
     }
 
     /**
-     * <p>testNormals.</p>
+     * <p>
+     * testNormals.
+     * </p>
      *
-     * @throws java.lang.Exception if any.
+     * @throws java.lang.Exception
+     *             if any.
      */
     @Test
     public void testNormals() throws Exception

@@ -1,4 +1,4 @@
-package com.obdobion.howto.fedup;
+package com.obdobion.howto.fedup.woodworking;
 
 import com.obdobion.argument.annotation.Arg;
 import com.obdobion.howto.Context;
@@ -6,7 +6,9 @@ import com.obdobion.howto.IPluginCommand;
 import com.obdobion.howto.Outline;
 
 /**
- * <p>EdgeJoinPanels class.</p>
+ * <p>
+ * EdgeJoinPanels class.
+ * </p>
  *
  * @author Chris DeGreef fedupforone@gmail.com
  */
@@ -48,7 +50,9 @@ public class EdgeJoinPanels implements IPluginCommand
     float                      roughAllowance;
 
     /**
-     * <p>Constructor for EdgeJoinPanels.</p>
+     * <p>
+     * Constructor for EdgeJoinPanels.
+     * </p>
      */
     public EdgeJoinPanels()
     {
@@ -88,6 +92,13 @@ public class EdgeJoinPanels implements IPluginCommand
     public String getOverview()
     {
         return "Indicates the tools and methods for edge joining boards to make a panel";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isOnceAndDone()
+    {
+        return false;
     }
 
     float roughBottomThickness()

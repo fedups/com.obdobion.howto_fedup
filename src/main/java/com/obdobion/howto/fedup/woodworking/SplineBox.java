@@ -1,4 +1,4 @@
-package com.obdobion.howto.fedup;
+package com.obdobion.howto.fedup.woodworking;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,9 @@ import com.obdobion.argument.annotation.Arg;
 import com.obdobion.howto.Context;
 import com.obdobion.howto.IPluginCommand;
 import com.obdobion.howto.Outline;
-import com.obdobion.howto.fedup.layout.MaterialLayout;
-import com.obdobion.howto.fedup.layout.MilledBoard;
-import com.obdobion.howto.fedup.layout.RoughCutLumberLayout;
+import com.obdobion.howto.fedup.woodworking.layout.MaterialLayout;
+import com.obdobion.howto.fedup.woodworking.layout.MilledBoard;
+import com.obdobion.howto.fedup.woodworking.layout.RoughCutLumberLayout;
 
 /**
  *
@@ -80,7 +80,9 @@ public class SplineBox implements IPluginCommand
     Context                    context;
 
     /**
-     * <p>Constructor for SplineBox.</p>
+     * <p>
+     * Constructor for SplineBox.
+     * </p>
      */
     public SplineBox()
     {
@@ -213,6 +215,13 @@ public class SplineBox implements IPluginCommand
         return z - bottomThickness - insetZForBottom() - topThickness;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public boolean isOnceAndDone()
+    {
+        return false;
+    }
+
     List<MilledBoard> neededBoards()
     {
         final List<MilledBoard> boards = new ArrayList<>();
@@ -270,13 +279,20 @@ public class SplineBox implements IPluginCommand
      */
     private void showBottom(final Outline o)
     {
-        context.getPluginManager().run(context,
-                context.getPluginManager().uniqueNameFor(EdgeJoinPanels.GROUP, EdgeJoinPanels.NAME),
-                "-X %1$4.3f -Y %2$4.3f --th %3$4.3f --RA %4$4.3f",
-                bottomXTotal(),
-                bottomY(),
-                bottomThickness,
-                roughAllowance);
+        try
+        {
+            context.getPluginManager().run(context,
+                    context.getPluginManager().uniqueNameFor(EdgeJoinPanels.GROUP, EdgeJoinPanels.NAME),
+                    "-X %1$4.3f -Y %2$4.3f --th %3$4.3f --RA %4$4.3f",
+                    bottomXTotal(),
+                    bottomY(),
+                    bottomThickness,
+                    roughAllowance);
+
+        } catch (final Exception e)
+        {
+            o.add(e.getMessage());
+        }
     }
 
     private void showMaterials(final Outline o)
@@ -301,48 +317,82 @@ public class SplineBox implements IPluginCommand
      */
     private void showRemoveLid(final Outline o)
     {
-        context.getPluginManager().run(context,
-                context.getPluginManager().uniqueNameFor(Dado.GROUP, Dado.NAME),
-                "-W %1$4.3f -D %2$4.3f -X %3$4.3f --type ETT --tool TS",
-                dadoThickness(),
-                bitDepthForLidRemoval(),
-                fenceForLidRemoval());
+        try
+        {
+            context.getPluginManager().run(context,
+                    context.getPluginManager().uniqueNameFor(Dado.GROUP, Dado.NAME),
+                    "-W %1$4.3f -D %2$4.3f -X %3$4.3f --type ETT --tool TS",
+                    dadoThickness(),
+                    bitDepthForLidRemoval(),
+                    fenceForLidRemoval());
+
+        } catch (final Exception e)
+        {
+            o.add(e.getMessage());
+        }
     }
 
     private void showSides(final Outline o)
     {
-        context.getPluginManager().run(context,
-                context.getPluginManager().uniqueNameFor(MiteredBox.GROUP, MiteredBox.NAME),
-                "--sides 4 --EL %1$4.3f --EW %2$4.3f --BW %3$4.3f --th %4$4.3f --RA %5$4.3f",
-                y,
-                x,
-                sideBoardWidth(),
-                sideThickness,
-                roughAllowance);
+        try
+        {
+            context.getPluginManager().run(context,
+                    context.getPluginManager().uniqueNameFor(MiteredBox.GROUP, MiteredBox.NAME),
+                    "--sides 4 --EL %1$4.3f --EW %2$4.3f --BW %3$4.3f --th %4$4.3f --RA %5$4.3f",
+                    y,
+                    x,
+                    sideBoardWidth(),
+                    sideThickness,
+                    roughAllowance);
+
+        } catch (final Exception e)
+        {
+            o.add(e.getMessage());
+        }
+        try
+        {
+            o.add("Place the top edge of each board to the fence and the inside of the box side down.");
+            context.getPluginManager().run(context,
+                    context.getPluginManager().uniqueNameFor(Dado.GROUP, Dado.NAME),
+                    "-W %1$4.3f -D %2$4.3f -X %3$4.3f --type ETT --tool TS",
+                    dadoThickness(),
+                    dadoDepth,
+                    fenceForBottomDado());
+
+        } catch (final Exception e)
+        {
+            o.add(e.getMessage());
+        }
 
         o.add("Place the top edge of each board to the fence and the inside of the box side down.");
-        context.getPluginManager().run(context,
-                context.getPluginManager().uniqueNameFor(Dado.GROUP, Dado.NAME),
-                "-W %1$4.3f -D %2$4.3f -X %3$4.3f --type ETT --tool TS",
-                dadoThickness(),
-                dadoDepth,
-                fenceForBottomDado());
+        try
+        {
+            context.getPluginManager().run(context,
+                    context.getPluginManager().uniqueNameFor(Dado.GROUP, Dado.NAME),
+                    "-W %1$4.3f -D %2$4.3f -X %3$4.3f --type ETT --tool TS",
+                    dadoThickness(),
+                    dadoDepth,
+                    fenceForTopDado());
+
+        } catch (final Exception e)
+        {
+            o.add(e.getMessage());
+        }
 
         o.add("Place the top edge of each board to the fence and the inside of the box side down.");
-        context.getPluginManager().run(context,
-                context.getPluginManager().uniqueNameFor(Dado.GROUP, Dado.NAME),
-                "-W %1$4.3f -D %2$4.3f -X %3$4.3f --type ETT --tool TS",
-                dadoThickness(),
-                dadoDepth,
-                fenceForTopDado());
+        try
+        {
+            context.getPluginManager().run(context,
+                    context.getPluginManager().uniqueNameFor(Dado.GROUP, Dado.NAME),
+                    "-W %1$4.3f -D %2$4.3f -X %3$4.3f --type ETT --tool TS",
+                    dadoThickness(),
+                    dadoDepth,
+                    fenceForLidInnerDado());
 
-        o.add("Place the top edge of each board to the fence and the inside of the box side down.");
-        context.getPluginManager().run(context,
-                context.getPluginManager().uniqueNameFor(Dado.GROUP, Dado.NAME),
-                "-W %1$4.3f -D %2$4.3f -X %3$4.3f --type ETT --tool TS",
-                dadoThickness(),
-                dadoDepth,
-                fenceForLidInnerDado());
+        } catch (final Exception e)
+        {
+            o.add(e.getMessage());
+        }
     }
 
     private void showSplines(final Outline o)
@@ -356,22 +406,34 @@ public class SplineBox implements IPluginCommand
 
     private void showTop(final Outline o)
     {
-        context.getPluginManager().run(context,
-                context.getPluginManager().uniqueNameFor(EdgeJoinPanels.GROUP, EdgeJoinPanels.NAME),
-                "-X %1$4.3f -Y %2$4.3f --th %3$4.3f --RA %4$4.3f",
-                topXTotal(),
-                topY(),
-                topThickness,
-                roughAllowance);
+        try
+        {
+            context.getPluginManager().run(context,
+                    context.getPluginManager().uniqueNameFor(EdgeJoinPanels.GROUP, EdgeJoinPanels.NAME),
+                    "-X %1$4.3f -Y %2$4.3f --th %3$4.3f --RA %4$4.3f",
+                    topXTotal(),
+                    topY(),
+                    topThickness,
+                    roughAllowance);
+
+        } catch (final Exception e)
+        {
+            o.add(e.getMessage());
+        }
 
         o.add("Top face down on the table.");
+        try
+        {
+            context.getPluginManager().run(context,
+                    context.getPluginManager().uniqueNameFor(Rabbet.GROUP, Rabbet.NAME),
+                    "-W %1$4.3f -D %2$4.3f --tool TS",
+                    bitDepthForTopRabbet(),
+                    topThickness - dadoThickness());
 
-        context.getPluginManager().run(context,
-                context.getPluginManager().uniqueNameFor(Dado.GROUP, Dado.NAME),
-                "-W %1$4.3f -D %2$4.3f -X %3$4.3f --type ETT --tool TS",
-                bitDepthForTopRabbet(),
-                topThickness - dadoThickness(),
-                0F);
+        } catch (final Exception e)
+        {
+            o.add(e.getMessage());
+        }
     }
 
     float sideBoardWidth()

@@ -1,4 +1,4 @@
-package com.obdobion.howto.fedup;
+package com.obdobion.howto.fedup.woodworking;
 
 import com.obdobion.argument.annotation.Arg;
 import com.obdobion.howto.Context;
@@ -6,22 +6,14 @@ import com.obdobion.howto.IPluginCommand;
 import com.obdobion.howto.Outline;
 
 /**
- * <p>Dado class.</p>
+ * <p>
+ * Dado class.
+ * </p>
  *
  * @author Chris DeGreef fedupforone@gmail.com
  */
 public class Dado implements IPluginCommand
 {
-    static public enum MeasurementType
-    {
-        EdgeToTop, EdgeToCenter, EdgeToBottom;
-    }
-
-    static public enum ToolType
-    {
-        TableSaw, Router;
-    }
-
     /** Constant <code>GROUP="WoodWorking"</code> */
     static final public String GROUP = "WoodWorking";
     /** Constant <code>NAME="dado"</code> */
@@ -52,7 +44,9 @@ public class Dado implements IPluginCommand
     ToolType                   tool;
 
     /**
-     * <p>Constructor for Dado.</p>
+     * <p>
+     * Constructor for Dado.
+     * </p>
      */
     public Dado()
     {
@@ -113,6 +107,13 @@ public class Dado implements IPluginCommand
     public String getOverview()
     {
         return "The tools and methods to plow out a dado";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isOnceAndDone()
+    {
+        return false;
     }
 
     private void showDado(final Outline o)
