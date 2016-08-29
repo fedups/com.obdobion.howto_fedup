@@ -1,8 +1,8 @@
 package com.obdobion.howto.fedup.util;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
-import java.util.Date;
 
 import com.obdobion.argument.annotation.Arg;
 import com.obdobion.calendar.CalendarFactory;
@@ -66,16 +66,16 @@ public class CalendarCalculator implements IPluginCommand
     {
         final Outline message = context.getOutline();
 
-        Calendar cal = null;
+        LocalDateTime ldt = null;
 
         if (baseDate == null)
-            cal = CalendarFactory.now(dateModifications);
+            ldt = CalendarFactory.now(dateModifications);
         else
-            cal = CalendarFactory.modify(baseDate, dateModifications);
+            ldt = CalendarFactory.modify(baseDate, dateModifications);
         if (javaTime != -1L)
-            cal.setTime(new Date(javaTime));
+            ldt = CalendarFactory.convert(javaTime * 1000);
         if (!time)
-            cal = CalendarFactory.noTime(cal);
+            ldt = CalendarFactory.noTime(ldt);
 
         if (format == null || format.trim().length() == 0)
             if (!time)
@@ -86,17 +86,17 @@ public class CalendarCalculator implements IPluginCommand
         switch (formatType)
         {
         case JavaLong:
-            message.printf("%d", cal.getTime().getTime());
+            message.printf("%d", CalendarFactory.asDateLong(ldt));
             break;
         case Jason:
-            message.printf(CalendarFactory.asJSON(cal));
+            message.printf(CalendarFactory.asJSON(ldt));
             break;
         case Formula:
-            message.printf(CalendarFactory.asFormula(cal));
+            message.printf(CalendarFactory.asFormula(ldt));
             break;
         case Specified:
             final SimpleDateFormat sdf = new SimpleDateFormat(format);
-            message.printf(sdf.format(cal.getTime()));
+            message.printf(sdf.format(CalendarFactory.asDate(ldt)));
             break;
         default:
             break;

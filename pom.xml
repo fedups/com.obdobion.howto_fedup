@@ -32,7 +32,7 @@
     </scm>
 	
 	<properties>
-		<howto.version>1.0.2</howto.version>
+		<howto.version>1.1.0</howto.version>
 		<java.target.version>1.8</java.target.version>
 		<java.source.version>1.8</java.source.version>
 		<junit.version>4.8.1</junit.version>

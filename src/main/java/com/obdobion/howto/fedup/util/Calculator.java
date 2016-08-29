@@ -15,8 +15,10 @@ public class Calculator implements IPluginCommand
     static final public String  GROUP  = "Utility";
     static final public String  NAME   = "calc";
 
-    @Arg(positional = true, caseSensitive = true)
-    Equ                         equation;
+    @Arg(positional = true,
+            caseSensitive = true,
+            help = "An algebraic equation that will be solved.  Quotes around the entire equation are not usually necessary.  However, when characters like '=' and ';' are needed then quotes will be required.")
+    String[]                    equation;
 
     public Calculator()
     {
@@ -27,14 +29,18 @@ public class Calculator implements IPluginCommand
     {
         final Outline message = context.getOutline();
 
+        final StringBuilder concatenatedInput = new StringBuilder();
+        for (final String s : equation)
+            concatenatedInput.append(s).append(" ");
+
         try
         {
-            message.printf(Equ.getInstance().evaluate().toString());
+            message.printf(Equ.getInstance().evaluate(concatenatedInput.toString()).toString());
 
         } catch (final Exception e)
         {
-            logger.error("{} : {}", equation.toString(), e.getMessage(), e);
-            message.printf(e.getMessage());
+            logger.error("{}: {}", concatenatedInput.toString(), e.getMessage(), e);
+            message.printf("%1$s: %2$s", concatenatedInput.toString(), e.getMessage());
         }
         return 0;
     }
