@@ -60,8 +60,7 @@ public class MiteredBox implements IPluginCommand
      * </p>
      */
     public MiteredBox()
-    {
-    }
+    {}
 
     /** {@inheritDoc} */
     @Override

@@ -55,8 +55,7 @@ public class EdgeJoinPanels implements IPluginCommand
      * </p>
      */
     public EdgeJoinPanels()
-    {
-    }
+    {}
 
     float bottomEdgeRouterBitHeight()
     {
@@ -139,7 +138,8 @@ public class EdgeJoinPanels implements IPluginCommand
     private void showPanel(final Outline o)
     {
         o.add("Use the edge joint router bit to join pieces of wood together.");
-        o.add("When adding the widths of the boards to get the total amount needed for the panel (%1$4.3f), subtract 1/2\" from each board width.",
+        o.add(
+                "When adding the widths of the boards to get the total amount needed for the panel (%1$4.3f), subtract 1/2\" from each board width.",
                 roughBottomXTotal());
         o.add("Each piece should be %1$4.3f long and the thickness of each is %2$4.3f.",
                 roughBottomY(), roughBottomThickness());

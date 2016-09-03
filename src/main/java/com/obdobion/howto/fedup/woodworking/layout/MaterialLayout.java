@@ -4,14 +4,18 @@ import java.util.List;
 
 @FunctionalInterface
 /**
- * <p>MaterialLayout interface.</p>
+ * <p>
+ * MaterialLayout interface.
+ * </p>
  *
  * @author Chris DeGreef fedupforone@gmail.com
  */
 public interface MaterialLayout
 {
     /**
-     * <p>layout.</p>
+     * <p>
+     * layout.
+     * </p>
      *
      * @param neededBoards a {@link java.util.List} object.
      * @return a {@link java.util.List} object.

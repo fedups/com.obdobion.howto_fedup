@@ -1,16 +1,21 @@
 package com.obdobion.howto.fedup.woodworking.layout;
 
 /**
- * <p>MilledBoard class.</p>
+ * <p>
+ * MilledBoard class.
+ * </p>
  *
  * @author Chris DeGreef fedupforone@gmail.com
  */
 public class MilledBoard extends Board
 {
     /**
-     * <p>Constructor for MilledBoard.</p>
+     * <p>
+     * Constructor for MilledBoard.
+     * </p>
      *
-     * @param board a {@link com.obdobion.howto.fedup.woodworking.layout.Board} object.
+     * @param board a {@link com.obdobion.howto.fedup.woodworking.layout.Board}
+     *            object.
      */
     public MilledBoard(final Board board)
     {
@@ -18,7 +23,9 @@ public class MilledBoard extends Board
     }
 
     /**
-     * <p>Constructor for MilledBoard.</p>
+     * <p>
+     * Constructor for MilledBoard.
+     * </p>
      *
      * @param title a {@link java.lang.String} object.
      * @param width a float.

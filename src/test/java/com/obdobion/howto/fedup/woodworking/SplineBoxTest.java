@@ -37,8 +37,7 @@ public class SplineBoxTest
      * boards.
      * </p>
      *
-     * @throws java.lang.Exception
-     *             if any.
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void boards() throws Exception
@@ -65,8 +64,7 @@ public class SplineBoxTest
      * execute.
      * </p>
      *
-     * @throws java.lang.Exception
-     *             if any.
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void execute() throws Exception
@@ -88,8 +86,7 @@ public class SplineBoxTest
      * help.
      * </p>
      *
-     * @throws java.lang.Exception
-     *             if any.
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void help() throws Exception
@@ -103,8 +100,7 @@ public class SplineBoxTest
      * testNormals.
      * </p>
      *
-     * @throws java.lang.Exception
-     *             if any.
+     * @throws java.lang.Exception if any.
      */
     @Test
     public void testNormals() throws Exception

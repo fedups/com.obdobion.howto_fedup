@@ -57,8 +57,7 @@ public class MiteredFrame implements IPluginCommand
      * </p>
      */
     public MiteredFrame()
-    {
-    }
+    {}
 
     /** {@inheritDoc} */
     @Override

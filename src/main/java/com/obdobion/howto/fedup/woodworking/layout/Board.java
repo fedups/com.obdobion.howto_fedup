@@ -1,7 +1,9 @@
 package com.obdobion.howto.fedup.woodworking.layout;
 
 /**
- * <p>Abstract Board class.</p>
+ * <p>
+ * Abstract Board class.
+ * </p>
  *
  * @author Chris DeGreef fedupforone@gmail.com
  */
@@ -13,9 +15,13 @@ public abstract class Board
     private final float  thickness;
 
     /**
-     * <p>Constructor for Board.</p>
+     * <p>
+     * Constructor for Board.
+     * </p>
      *
-     * @param anotherBoard a {@link com.obdobion.howto.fedup.woodworking.layout.Board} object.
+     * @param anotherBoard a
+     *            {@link com.obdobion.howto.fedup.woodworking.layout.Board}
+     *            object.
      */
     public Board(final Board anotherBoard)
     {
@@ -26,7 +32,9 @@ public abstract class Board
     }
 
     /**
-     * <p>Constructor for Board.</p>
+     * <p>
+     * Constructor for Board.
+     * </p>
      *
      * @param title a {@link java.lang.String} object.
      * @param width a float.
@@ -42,7 +50,9 @@ public abstract class Board
     }
 
     /**
-     * <p>Getter for the field <code>length</code>.</p>
+     * <p>
+     * Getter for the field <code>length</code>.
+     * </p>
      *
      * @return the length
      */
@@ -52,7 +62,9 @@ public abstract class Board
     }
 
     /**
-     * <p>Getter for the field <code>thickness</code>.</p>
+     * <p>
+     * Getter for the field <code>thickness</code>.
+     * </p>
      *
      * @return the thickness
      */
@@ -62,7 +74,9 @@ public abstract class Board
     }
 
     /**
-     * <p>Getter for the field <code>title</code>.</p>
+     * <p>
+     * Getter for the field <code>title</code>.
+     * </p>
      *
      * @return the title
      */
@@ -72,7 +86,9 @@ public abstract class Board
     }
 
     /**
-     * <p>Getter for the field <code>width</code>.</p>
+     * <p>
+     * Getter for the field <code>width</code>.
+     * </p>
      *
      * @return the width
      */

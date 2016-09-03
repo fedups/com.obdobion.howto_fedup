@@ -23,7 +23,9 @@ public class RoughCutLumberLayout implements MaterialLayout
     float maxRawBoardLength;
 
     /**
-     * <p>Constructor for RoughCutLumberLayout.</p>
+     * <p>
+     * Constructor for RoughCutLumberLayout.
+     * </p>
      */
     public RoughCutLumberLayout()
     {

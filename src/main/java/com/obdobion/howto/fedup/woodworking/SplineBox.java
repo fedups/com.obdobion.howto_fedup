@@ -85,8 +85,7 @@ public class SplineBox implements IPluginCommand
      * </p>
      */
     public SplineBox()
-    {
-    }
+    {}
 
     float bitDepthForLidRemoval()
     {

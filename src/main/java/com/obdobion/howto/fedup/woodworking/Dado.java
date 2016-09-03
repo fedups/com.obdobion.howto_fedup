@@ -49,19 +49,18 @@ public class Dado implements IPluginCommand
      * </p>
      */
     public Dado()
-    {
-    }
+    {}
 
     float convertDistanceToEdgeToTop()
     {
         switch (type)
         {
-        case EdgeToBottom:
-            return location - width;
-        case EdgeToCenter:
-            return location - (width / 2);
-        case EdgeToTop:
-            return location;
+            case EdgeToBottom:
+                return location - width;
+            case EdgeToCenter:
+                return location - (width / 2);
+            case EdgeToTop:
+                return location;
         }
         return location;
     }
@@ -80,10 +79,10 @@ public class Dado implements IPluginCommand
     {
         switch (tool)
         {
-        case TableSaw:
-            return convertDistanceToEdgeToTop();
-        case Router:
-            return convertDistanceToEdgeToTop() + (width / 2);
+            case TableSaw:
+                return convertDistanceToEdgeToTop();
+            case Router:
+                return convertDistanceToEdgeToTop() + (width / 2);
         }
         return 0F;
     }
@@ -120,14 +119,14 @@ public class Dado implements IPluginCommand
     {
         switch (tool)
         {
-        case TableSaw:
-            o.add("Install a %1$4.3f dado blade with a height of %2$4.3f and the fence at %3$4.3f.",
-                    width, depth, fenceLocation());
-            break;
-        case Router:
-            o.add("Use the %1$4.3f straight cut router bit, set the depth to %2$4.3f and the fence at %3$4.3f.",
-                    width, depth, fenceLocation());
-            break;
+            case TableSaw:
+                o.add("Install a %1$4.3f dado blade with a height of %2$4.3f and the fence at %3$4.3f.",
+                        width, depth, fenceLocation());
+                break;
+            case Router:
+                o.add("Use the %1$4.3f straight cut router bit, set the depth to %2$4.3f and the fence at %3$4.3f.",
+                        width, depth, fenceLocation());
+                break;
         }
     }
 

@@ -1,16 +1,21 @@
 package com.obdobion.howto.fedup.woodworking.layout;
 
 /**
- * <p>RawBoard class.</p>
+ * <p>
+ * RawBoard class.
+ * </p>
  *
  * @author Chris DeGreef fedupforone@gmail.com
  */
 public class RawBoard extends Board
 {
     /**
-     * <p>Constructor for RawBoard.</p>
+     * <p>
+     * Constructor for RawBoard.
+     * </p>
      *
-     * @param board a {@link com.obdobion.howto.fedup.woodworking.layout.Board} object.
+     * @param board a {@link com.obdobion.howto.fedup.woodworking.layout.Board}
+     *            object.
      */
     public RawBoard(final Board board)
     {
@@ -18,7 +23,9 @@ public class RawBoard extends Board
     }
 
     /**
-     * <p>Constructor for RawBoard.</p>
+     * <p>
+     * Constructor for RawBoard.
+     * </p>
      *
      * @param title a {@link java.lang.String} object.
      * @param width a float.

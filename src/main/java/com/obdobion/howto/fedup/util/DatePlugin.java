@@ -67,8 +67,7 @@ public class DatePlugin implements IPluginCommand
      * </p>
      */
     public DatePlugin()
-    {
-    }
+    {}
 
     /** {@inheritDoc} */
     @Override
@@ -87,20 +86,20 @@ public class DatePlugin implements IPluginCommand
 
         switch (formatType)
         {
-        case JavaLong:
-            message.printf("%d", CalendarFactory.asDateLong(ldt));
-            break;
-        case Jason:
-            message.printf(CalendarFactory.asJSON(ldt));
-            break;
-        case Formula:
-            message.printf(CalendarFactory.asFormula(ldt));
-            break;
-        case Specified:
-            message.printf(format.format(ldt));
-            break;
-        default:
-            break;
+            case JavaLong:
+                message.printf("%d", CalendarFactory.asDateLong(ldt));
+                break;
+            case Jason:
+                message.printf(CalendarFactory.asJSON(ldt));
+                break;
+            case Formula:
+                message.printf(CalendarFactory.asFormula(ldt));
+                break;
+            case Specified:
+                message.printf(format.format(ldt));
+                break;
+            default:
+                break;
         }
         return 0;
     }

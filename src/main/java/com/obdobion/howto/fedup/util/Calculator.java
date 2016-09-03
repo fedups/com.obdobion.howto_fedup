@@ -51,8 +51,7 @@ public class Calculator implements IPluginCommand
      * </p>
      */
     public Calculator()
-    {
-    }
+    {}
 
     /** {@inheritDoc} */
     @Override
