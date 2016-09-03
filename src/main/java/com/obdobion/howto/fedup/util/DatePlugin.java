@@ -1,8 +1,8 @@
 package com.obdobion.howto.fedup.util;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Calendar;
+import java.time.format.DateTimeFormatter;
 
 import com.obdobion.argument.annotation.Arg;
 import com.obdobion.calendar.CalendarFactory;
@@ -10,7 +10,14 @@ import com.obdobion.howto.Context;
 import com.obdobion.howto.IPluginCommand;
 import com.obdobion.howto.Outline;
 
-public class CalendarCalculator implements IPluginCommand
+/**
+ * <p>
+ * DatePlugin class.
+ * </p>
+ *
+ * @author Chris DeGreef fedupforone@gmail.com
+ */
+public class DatePlugin implements IPluginCommand
 {
     static public enum CalendarCalculatorFormat
     {
@@ -20,18 +27,16 @@ public class CalendarCalculator implements IPluginCommand
         Specified
     }
 
+    /** Constant <code>GROUP="Utility"</code> */
     static final public String GROUP = "Utility";
+    /** Constant <code>NAME="date"</code> */
     static final public String NAME  = "date";
 
     @Arg(positional = true,
             caseSensitive = true,
             defaultValues = "today",
-            help = "The base date, to which any modifications will be applied.  The current date/time will be used by default")
-    Calendar                   baseDate;
-
-    @Arg(defaultValues = "false",
-            help = "Indicates that the time should be included in the date otherwise it will assume midnight (AM)")
-    boolean                    time;
+            help = "The base date, to which any modifications will be applied.  The current date will be used by default")
+    LocalDate                  baseDate;
 
     @Arg(range = { "0" },
             allowCamelCaps = true,
@@ -52,15 +57,20 @@ public class CalendarCalculator implements IPluginCommand
     CalendarCalculatorFormat   formatType;
 
     @Arg(shortName = 'f',
-            caseSensitive = true,
-            defaultValues = "",
-            help = "Used along with the '--as specified'.  Use the standard Java Simple Date formatter rules.  Ex: 'yyyy/MM/dd' ")
-    String                     format;
+            defaultValues = "MM/dd/yyyy",
+            help = "Used along with the '--as specified'.  Use the standard Java DateTimeFormatter rules.")
+    DateTimeFormatter          format;
 
-    public CalendarCalculator()
+    /**
+     * <p>
+     * Constructor for DatePlugin.
+     * </p>
+     */
+    public DatePlugin()
     {
     }
 
+    /** {@inheritDoc} */
     @Override
     public int execute(final Context context)
     {
@@ -68,20 +78,12 @@ public class CalendarCalculator implements IPluginCommand
 
         LocalDateTime ldt = null;
 
-        if (baseDate == null)
-            ldt = CalendarFactory.now(dateModifications);
-        else
-            ldt = CalendarFactory.modify(baseDate, dateModifications);
         if (javaTime != -1L)
             ldt = CalendarFactory.convert(javaTime * 1000);
-        if (!time)
-            ldt = CalendarFactory.noTime(ldt);
-
-        if (format == null || format.trim().length() == 0)
-            if (!time)
-                format = "MM/dd/yyyy";
-            else
-                format = "MM/dd/yyyy@HH:mm:ss.SSS";
+        else if (baseDate == null)
+            ldt = CalendarFactory.today(dateModifications);
+        else
+            ldt = CalendarFactory.modify(baseDate, dateModifications);
 
         switch (formatType)
         {
@@ -95,8 +97,7 @@ public class CalendarCalculator implements IPluginCommand
             message.printf(CalendarFactory.asFormula(ldt));
             break;
         case Specified:
-            final SimpleDateFormat sdf = new SimpleDateFormat(format);
-            message.printf(sdf.format(CalendarFactory.asDate(ldt)));
+            message.printf(format.format(ldt));
             break;
         default:
             break;
@@ -104,24 +105,28 @@ public class CalendarCalculator implements IPluginCommand
         return 0;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getGroup()
     {
         return GROUP;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getName()
     {
         return NAME;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getOverview()
     {
         return "Apply modifications to a date and present the results in a variety of formats.";
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isOnceAndDone()
     {
