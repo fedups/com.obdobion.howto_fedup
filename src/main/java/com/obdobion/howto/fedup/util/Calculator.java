@@ -1,5 +1,6 @@
 package com.obdobion.howto.fedup.util;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -55,7 +56,7 @@ public class Calculator implements IPluginCommand
 
     /** {@inheritDoc} */
     @Override
-    public int execute(final Context context)
+    public int execute(final Context context) throws ParseException
     {
         final Outline message = context.getOutline();
         try
@@ -67,8 +68,7 @@ public class Calculator implements IPluginCommand
 
         } catch (final Exception e)
         {
-            logger.error("{}: {}", equation.toString(), e.getMessage(), e);
-            message.printf("%1$s: %2$s", equation.toString(), e.getMessage());
+            throw new ParseException(equation.toString() + ": " + e.getMessage(), 0);
         }
         return 0;
     }

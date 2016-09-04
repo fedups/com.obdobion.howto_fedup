@@ -1,5 +1,6 @@
 package com.obdobion.howto.fedup.util;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -71,7 +72,7 @@ public class DatePlugin implements IPluginCommand
 
     /** {@inheritDoc} */
     @Override
-    public int execute(final Context context)
+    public int execute(final Context context) throws ParseException
     {
         final Outline message = context.getOutline();
 
