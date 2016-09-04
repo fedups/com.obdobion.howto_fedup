@@ -1,7 +1,6 @@
 package com.obdobion.howto.fedup.util;
 
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -18,18 +17,18 @@ import com.obdobion.howto.Outline;
  *
  * @author Chris DeGreef fedupforone@gmail.com
  */
-public class DatePlugin implements IPluginCommand
+public class DateTimePlugin implements IPluginCommand
 {
     /** Constant <code>GROUP="Utility"</code> */
     static final public String GROUP = "Utility";
     /** Constant <code>NAME="date"</code> */
-    static final public String NAME  = "date";
+    static final public String NAME  = "datetime";
 
     @Arg(positional = true,
             caseSensitive = true,
-            defaultValues = "today",
-            help = "The base date, to which any modifications will be applied.  The current date will be used by default")
-    LocalDate                  baseDate;
+            defaultValues = "now",
+            help = "The base date, to which any modifications will be applied.  The current date/time will be used by default")
+    LocalDateTime              baseDate;
 
     @Arg(range = { "0" },
             allowCamelCaps = true,
@@ -50,7 +49,7 @@ public class DatePlugin implements IPluginCommand
     CalendarCalculatorFormat   formatType;
 
     @Arg(shortName = 'f',
-            defaultValues = "MM/dd/yyyy",
+            defaultValues = "MM/dd/yyyy HH:mm:ss.SSS",
             help = "Used along with the '--as specified'.  Use the standard Java DateTimeFormatter rules.")
     DateTimeFormatter          format;
 
@@ -59,7 +58,7 @@ public class DatePlugin implements IPluginCommand
      * Constructor for DatePlugin.
      * </p>
      */
-    public DatePlugin()
+    public DateTimePlugin()
     {}
 
     /** {@inheritDoc} */
@@ -115,7 +114,7 @@ public class DatePlugin implements IPluginCommand
     @Override
     public String getOverview()
     {
-        return "Apply modifications to a date and present the results in a variety of formats.";
+        return "Apply modifications to a date/time and present the results in a variety of formats.";
     }
 
     /** {@inheritDoc} */

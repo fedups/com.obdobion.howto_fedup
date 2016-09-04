@@ -4,6 +4,7 @@ com.obdobion.howto.fedup.woodworking.Dado
 com.obdobion.howto.fedup.woodworking.Rabbet
 com.obdobion.howto.fedup.woodworking.MiteredBox
 com.obdobion.howto.fedup.woodworking.MiteredFrame
+com.obdobion.howto.fedup.util.DateTimePlugin
 com.obdobion.howto.fedup.util.DatePlugin
 com.obdobion.howto.fedup.util.TimePlugin
 com.obdobion.howto.fedup.util.Calculator

@@ -20,14 +20,6 @@ import com.obdobion.howto.Outline;
  */
 public class TimePlugin implements IPluginCommand
 {
-    static public enum CalendarCalculatorFormat
-    {
-        JavaLong,
-        Jason,
-        Formula,
-        Specified
-    }
-
     /** Constant <code>GROUP="Utility"</code> */
     static final public String GROUP = "Utility";
     /** Constant <code>NAME="date"</code> */
@@ -54,6 +46,7 @@ public class TimePlugin implements IPluginCommand
     @Arg(longName = "as",
             shortName = 'a',
             defaultValues = "Specified",
+            inList = { "Specified", "Formula" },
             help = "Indicates how the time should be presented.")
     CalendarCalculatorFormat   formatType;
 
@@ -79,7 +72,7 @@ public class TimePlugin implements IPluginCommand
         LocalDateTime ldt = null;
 
         if (javaTime != -1L)
-            ldt = CalendarFactory.convert(javaTime * 1000);
+            ldt = CalendarFactory.convert(javaTime / 1000);
         else if (baseTime == null)
             ldt = CalendarFactory.now(timeModifications);
         else
@@ -87,19 +80,11 @@ public class TimePlugin implements IPluginCommand
 
         switch (formatType)
         {
-            case JavaLong:
-                message.printf("%d", CalendarFactory.asDateLong(ldt));
-                break;
-            case Jason:
-                message.printf(CalendarFactory.asJSON(ldt));
-                break;
             case Formula:
                 message.printf(CalendarFactory.asFormula(ldt));
                 break;
-            case Specified:
-                message.printf(format.format(ldt));
-                break;
             default:
+                message.printf(format.format(ldt));
                 break;
         }
         return 0;
