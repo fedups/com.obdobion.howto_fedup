@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.obdobion</groupId>
 	<artifactId>howto_fedup</artifactId>
-	<version>1.0.3</version>
+	<version>1.0.4</version>
     <name>${project.groupId}.${project.artifactId}</name>
 	<description>howto_fedup</description>
 	<url>https://github.com/fedups/com.obdobion.howto_fedup</url>
@@ -26,13 +26,19 @@
         </developer>
     </developers>
 
+    <scm>
+        <connection>scm:git:git@github.com:fedups/com.obdobion.howto_fedup.git</connection>
+        <developerConnection>scm:git:git@github.com:fedups/com.obdobion.howto_fedup.git</developerConnection>
+        <url>git@github.com:fedups/com.obdobion.howto_fedup.git</url>
+    </scm>
+
     <issueManagement>
         <system>GitHub</system>
         <url>https://github.com/fedups/com.obdobion.howto_fedup/issues</url>
     </issueManagement>
 	
 	<properties>
-		<howto.version>1.2.0</howto.version>
+		<howto.version>1.2.1</howto.version>
 		<java.target.version>1.8</java.target.version>
 		<java.source.version>1.8</java.source.version>
 		<junit.version>4.8.1</junit.version>
